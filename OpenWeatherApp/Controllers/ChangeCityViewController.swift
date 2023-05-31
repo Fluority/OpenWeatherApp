@@ -7,23 +7,36 @@
 
 import UIKit
 
+protocol ChangeCityDelegate {
+    func userEnterCityName(city: String)
+}
+
 class ChangeCityViewController: UIViewController {
 
+    var delegate: ChangeCityDelegate?
+    @IBOutlet weak var cityTextField: DesignableTextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
+    @IBAction func getWeatherTapped(_ sender: Any) {
+        
+        guard let cityName = cityTextField.text, !cityName.isEmpty else {
+            // Homework, there is alert if text field is empty
+            let alertController = UIAlertController(title: "Empty Field", message: "Please enter a city name", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+            return
+        }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        delegate?.userEnterCityName(city: cityName)
+        self.dismiss(animated: true)
+        
     }
-    */
+    
 
 }
